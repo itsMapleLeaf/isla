@@ -1,0 +1,15 @@
+- item
+  - name: string
+  - placed in one location
+- location
+  - name: string
+  - has many items
+- world
+  - name: string
+  - has many locations
+- multiworld
+  - has many worlds
+- server
+  - has one multiworld
+- client
+  - communicates with server

@@ -1,0 +1,17 @@
+{
+	"name": "@isla/cli",
+	"type": "module",
+	"private": true,
+	"main": "src/main.ts",
+	"scripts": {
+		"start": "bun run .",
+		"dev": "bun run --watch ."
+	},
+	"dependencies": {
+		"@isla/shared": "*",
+		"ws": "^8.18.3"
+	},
+	"devDependencies": {
+		"@types/ws": "^8.18.1"
+	}
+}

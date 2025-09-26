@@ -1,0 +1,9 @@
+{
+	"name": "@isla/shared",
+	"type": "module",
+	"private": true,
+	"main": "src/main.ts",
+	"scripts": {},
+	"dependencies": {},
+	"devDependencies": {}
+}
