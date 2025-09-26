@@ -1,0 +1,38 @@
+{
+  "Adventure": [
+    "Instantiation",
+    "Cataclysm",
+    "Diversion",
+    "Euphoria",
+    "Entanglement",
+    "Automation",
+    "Abyss",
+    "Embers",
+    "Isolation",
+    "Repulsion",
+    "Compression",
+    "Research",
+    "Contagion",
+    "Overload",
+    "Ascension",
+    "Enemy"
+  ],
+  "Lost to Echoes": [
+    "Long Ago",
+    "Forgotten Utopia",
+    "A Deeper Void",
+    "Eye of the Storm",
+    "The Sentinel Still Watches",
+    "Shadow of the Beast",
+    "Pulse of a Violent Heart",
+    "It Was Supposed To Be Perfect",
+    "Echoes"
+  ],
+  "Nexus": [
+    "Mobilization",
+    "Resonance",
+    "Deterrence",
+    "Terminus",
+    "Collapse"
+  ]
+}
