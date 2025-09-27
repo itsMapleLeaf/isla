@@ -14,6 +14,10 @@ pub fn main() !void {
     lua.openBase();
     lua.openIO();
 
+    lua.doFile("../demo-world-spec/api.lua") catch {
+        print("{s}\n", .{try lua.toString(-1)});
+    };
+
     lua.doFile("../demo-world-spec/distance/init.lua") catch {
         print("{s}\n", .{try lua.toString(-1)});
     };
@@ -25,3 +29,4 @@ pub fn main() !void {
         print("{s}\n", .{try lua.toString(-1)});
     };
 }
+
