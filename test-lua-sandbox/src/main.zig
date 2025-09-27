@@ -14,7 +14,7 @@ pub fn main() !void {
     lua.openBase();
     lua.openIO();
 
-    lua.doFile("../demo-world-spec/distance/init.lua") catch |err| if (err == error.InvalidSyntax) {
+    lua.doFile("../demo-world-spec/distance/init.lua") catch {
         print("{s}\n", .{try lua.toString(-1)});
     };
 
