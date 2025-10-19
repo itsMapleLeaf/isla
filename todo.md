@@ -1,0 +1,10 @@
+- `/` (index) - new game page
+  - show a form:
+    - game name
+    - players/worlds
+    - submit -> generate new multi and redirect
+- `/multi/$slug`
+  - list world nav links on a sidebar
+  - list tasks for each world
+  - check task checkbox to release items
+  - create new game
