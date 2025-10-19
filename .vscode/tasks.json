@@ -1,0 +1,21 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "dev",
+			"dependsOn": ["dev:convex", "dev:vite"],
+			"dependsOrder": "parallel",
+			"group": "build"
+		},
+		{
+			"label": "dev:convex",
+			"command": "bun",
+			"args": ["run", "dev:convex"]
+		},
+		{
+			"label": "dev:vite",
+			"command": "bun",
+			"args": ["run", "dev:vite"]
+		}
+	]
+}
