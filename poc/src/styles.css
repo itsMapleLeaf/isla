@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@theme {
+	--theme-hue: 150;
+
+	--theme-gray-light: oklch(95% 3% var(--theme-hue));
+	--theme-gray-dark: oklch(16% 10% var(--theme-hue));
+
+	--theme-primary-light: oklch(95% 50% var(--theme-hue));
+	--theme-primary-dark: oklch(15% 50% var(--theme-hue));
+
+	--color-gray-50: color-mix(
+		in oklab,
+		var(--theme-gray-light),
+		var(--theme-gray-dark) calc(100% * pow(0 / 9, 0.6))
+	);
+	--color-gray-100: color-mix(
+		in oklab,
+		var(--theme-gray-light),
+		var(--theme-gray-dark) calc(100% * pow(1 / 9, 0.6))
+	);
+	--color-gray-200: color-mix(
+		in oklab,
+		var(--theme-gray-light),
+		var(--theme-gray-dark) calc(100% * pow(2 / 9, 0.6))
+	);
+	--color-gray-300: color-mix(
+		in oklab,
+		var(--theme-gray-light),
+		var(--theme-gray-dark) calc(100% * pow(3 / 9, 0.6))
+	);
+	--color-gray-400: color-mix(
+		in oklab,
+		var(--theme-gray-light),
+		var(--theme-gray-dark) calc(100% * pow(4 / 9, 0.6))
+	);
+	--color-gray-500: color-mix(
+		in oklab,
+		var(--theme-gray-light),
+		var(--theme-gray-dark) calc(100% * pow(5 / 9, 0.6))
+	);
+	--color-gray-600: color-mix(
+		in oklab,
+		var(--theme-gray-light),
+		var(--theme-gray-dark) calc(100% * pow(6 / 9, 0.6))
+	);
+	--color-gray-700: color-mix(
+		in oklab,
+		var(--theme-gray-light),
+		var(--theme-gray-dark) calc(100% * pow(7 / 9, 0.6))
+	);
+	--color-gray-800: color-mix(
+		in oklab,
+		var(--theme-gray-light),
+		var(--theme-gray-dark) calc(100% * pow(8 / 9, 0.6))
+	);
+	--color-gray-900: color-mix(
+		in oklab,
+		var(--theme-gray-light),
+		var(--theme-gray-dark) calc(100% * pow(9 / 9, 0.6))
+	);
+
+	--color-primary-50: color-mix(
+		in oklab,
+		var(--theme-primary-light),
+		var(--theme-primary-dark) calc(100% * pow(0 / 9, 0.6))
+	);
+	--color-primary-100: color-mix(
+		in oklab,
+		var(--theme-primary-light),
+		var(--theme-primary-dark) calc(100% * pow(1 / 9, 0.6))
+	);
+	--color-primary-200: color-mix(
+		in oklab,
+		var(--theme-primary-light),
+		var(--theme-primary-dark) calc(100% * pow(2 / 9, 0.6))
+	);
+	--color-primary-300: color-mix(
+		in oklab,
+		var(--theme-primary-light),
+		var(--theme-primary-dark) calc(100% * pow(3 / 9, 0.6))
+	);
+	--color-primary-400: color-mix(
+		in oklab,
+		var(--theme-primary-light),
+		var(--theme-primary-dark) calc(100% * pow(4 / 9, 0.6))
+	);
+	--color-primary-500: color-mix(
+		in oklab,
+		var(--theme-primary-light),
+		var(--theme-primary-dark) calc(100% * pow(5 / 9, 0.6))
+	);
+	--color-primary-600: color-mix(
+		in oklab,
+		var(--theme-primary-light),
+		var(--theme-primary-dark) calc(100% * pow(6 / 9, 0.6))
+	);
+	--color-primary-700: color-mix(
+		in oklab,
+		var(--theme-primary-light),
+		var(--theme-primary-dark) calc(100% * pow(7 / 9, 0.6))
+	);
+	--color-primary-800: color-mix(
+		in oklab,
+		var(--theme-primary-light),
+		var(--theme-primary-dark) calc(100% * pow(8 / 9, 0.6))
+	);
+	--color-primary-900: color-mix(
+		in oklab,
+		var(--theme-primary-light),
+		var(--theme-primary-dark) calc(100% * pow(9 / 9, 0.6))
+	);
+}

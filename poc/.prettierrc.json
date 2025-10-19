@@ -1,0 +1,7 @@
+{
+	"semi": false,
+	"useTabs": true,
+	"htmlWhitespaceSensitivity": "ignore",
+	"plugins": ["prettier-plugin-jsdoc", "prettier-plugin-tailwindcss"],
+	"tailwindStylesheet": "./src/styles.css"
+}
