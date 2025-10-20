@@ -24,6 +24,7 @@
 		"@tanstack/react-start": "1.133.15",
 		"@tanstack/router-plugin": "1.133.15",
 		"convex": "1.28.0",
+		"es-toolkit": "^1.40.0",
 		"lucide-react": "0.546.0",
 		"react": "19.2.0",
 		"react-dom": "19.2.0",
