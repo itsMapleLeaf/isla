@@ -32,7 +32,11 @@ class Player {
 	readonly tasks = new Map<string, Task>()
 	readonly items = new Map<string, Item>()
 
-	constructor(name: string, spec: PlayerSpec) {
+	constructor(
+		name: string,
+		spec: PlayerSpec,
+		readonly multi: MultiWorld,
+	) {
 		this.id = `player:${name}`
 		this.name = name
 		this.spec = spec
@@ -81,7 +85,6 @@ class Player {
 
 class Task {
 	readonly id
-	readonly items: Array<Item> = []
 
 	constructor(
 		readonly name: string,
@@ -89,6 +92,10 @@ class Task {
 		readonly player: Player,
 	) {
 		this.id = `task:${player.name}:${name}`
+	}
+
+	get items() {
+		return this.player.multi.items.values().filter((i) => i.task === this)
 	}
 
 	isAccessibleWith(inventory: Iterable<Item>) {
@@ -156,7 +163,7 @@ class MultiWorld {
 	}
 
 	definePlayer(name: string, spec: PlayerSpec) {
-		const player = new Player(name, spec)
+		const player = new Player(name, spec, this)
 		this.players.set(player.id, player)
 		return player
 	}
@@ -265,7 +272,6 @@ function generate(multi: MultiWorld) {
 		skipCount = 0
 
 		placingItem.task = nextTask
-		nextTask.items.push(placingItem)
 
 		taskLayer = without(taskLayer, nextTask)
 		if (taskLayer.length === 0 || cannotFillLayer) {
@@ -375,7 +381,10 @@ if (import.meta.main) {
 		console.log("Tasks:")
 		for (const task of player.tasks.values()) {
 			console.log(
-				`- ${task.name} [${task.items.map((item) => `${item.name} (${item.player.name})`).join(", ")}]`,
+				`- ${task.name} [${task.items
+					.map((item) => `${item.name} (${item.player.name})`)
+					.toArray()
+					.join(", ")}]`,
 			)
 		}
 		console.log()
