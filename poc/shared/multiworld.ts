@@ -167,115 +167,115 @@ class MultiWorld {
 		this.players.set(player.id, player)
 		return player
 	}
-}
 
-/**
- * This algo ensures a valid playthrough by placing items as if it were
- * collecting them in a playthrough.
- *
- * It also attempts to place items in tasks by layers, to spread out item counts
- * per task throughout the multiworld
- *
- * If it cannot fill a layer due to restrictive logic (see {@link dungeonKeys}),
- * it places the last item it's able for that layer, then continues onto a new
- * layer.
- *
- * This algo _does not_ ensure that every task has an item, since that's
- * sometimes not possible or expected
- *
- * And it's also probably really bad on perf lol, need to stress test it with
- * the full 13k voltex manual
- */
-function generate(multi: MultiWorld) {
-	for (const player of multi.players.values()) {
-		let playerItemPool = shuffle(player.items.values().toArray())
+	/**
+	 * This algo ensures a valid playthrough by placing items as if it were
+	 * collecting them in a playthrough.
+	 *
+	 * It also attempts to place items in tasks by layers, to spread out item
+	 * counts per task throughout the multiworld
+	 *
+	 * If it cannot fill a layer due to restrictive logic (see
+	 * {@link dungeonKeys}), it places the last item it's able for that layer, then
+	 * continues onto a new layer.
+	 *
+	 * This algo _does not_ ensure that every task has an item, since that's
+	 * sometimes not possible or expected
+	 *
+	 * And it's also probably really bad on perf lol, need to stress test it with
+	 * the full 13k voltex manual
+	 */
+	generate() {
+		for (const player of this.players.values()) {
+			let playerItemPool = shuffle(player.items.values().toArray())
 
-		for (const entry of player.spec.world.startingItems) {
-			for (const _ of range(entry.count)) {
-				let item
-				if ("name" in entry) {
-					item = playerItemPool.find((i) => i.name === entry.name)
-				} else {
-					item = playerItemPool.find((i) => i.spec.tags?.includes(entry.tag))
+			for (const entry of player.spec.world.startingItems) {
+				for (const _ of range(entry.count)) {
+					let item
+					if ("name" in entry) {
+						item = playerItemPool.find((i) => i.name === entry.name)
+					} else {
+						item = playerItemPool.find((i) => i.spec.tags?.includes(entry.tag))
+					}
+
+					if (!item) {
+						raise(
+							`unable to add starting item for ${player.name}: ${JSON.stringify(entry)}`,
+						)
+					}
+
+					item.collected = true
+					playerItemPool = without(playerItemPool, item)
 				}
-
-				if (!item) {
-					raise(
-						`unable to add starting item for ${player.name}: ${JSON.stringify(entry)}`,
-					)
-				}
-
-				item.collected = true
-				playerItemPool = without(playerItemPool, item)
 			}
 		}
-	}
 
-	const itemPool = shuffle(
-		multi.items
-			.values()
-			.filter((item) => !item.collected)
-			.toArray(),
-	)
-
-	let taskLayer = shuffle(multi.nonVictoryTasks.toArray())
-	let placingItem
-	let skipCount = 0
-
-	while ((placingItem = itemPool.pop())) {
-		const nextTask = taskLayer.find((t) =>
-			t.isAccessibleWith([...t.player.inventory, ...t.player.placedItems]),
+		const itemPool = shuffle(
+			this.items
+				.values()
+				.filter((item) => !item.collected)
+				.toArray(),
 		)
 
-		// since we're generating by placing items as if we were collecting them,
-		// there should always be a task accessible _at some point_ in generation,
-		// and if not, the world's logic is impossible
-		// ...I think
-		if (!nextTask) {
-			// this error msg needs improvement lol
-			raise("fatal: no accessible task at current gen state")
-		}
+		let taskLayer = shuffle(this.nonVictoryTasks.toArray())
+		let placingItem
+		let skipCount = 0
 
-		let cannotFillLayer = false
-
-		if (taskLayer.length > 1) {
-			// our goal is to fill the layer (the current list of every task in the world)
-			//
-			// to ensure we can fill the layer, we need to check if,
-			// after placing this task, will there still be accessible tasks in the layer afterward?
-			const nextAccessibleTask = taskLayer.find(
-				(t) =>
-					t !== nextTask &&
-					t.isAccessibleWith([
-						...t.player.inventory,
-						...t.player.placedItems,
-						placingItem!,
-					]),
+		while ((placingItem = itemPool.pop())) {
+			const nextTask = taskLayer.find((t) =>
+				t.isAccessibleWith([...t.player.inventory, ...t.player.placedItems]),
 			)
 
-			if (!nextAccessibleTask) {
-				// if there are no tasks after placing this item,
-				// skip it and add it back to the pool to try placing it on a later iteration,
-				// while keeping track of how many items we've skipped from this condition
-				if (skipCount < itemPool.length + 1) {
-					skipCount += 1
-					itemPool.unshift(placingItem)
-					continue
-				}
-
-				// if we're here, we skipped every item and can't find one to fill the layer,
-				// so set this to know that we need to restart with a new layer
-				cannotFillLayer = true
+			// since we're generating by placing items as if we were collecting them,
+			// there should always be a task accessible _at some point_ in generation,
+			// and if not, the world's logic is impossible
+			// ...I think
+			if (!nextTask) {
+				// this error msg needs improvement lol
+				raise("fatal: no accessible task at current gen state")
 			}
-		}
 
-		skipCount = 0
+			let cannotFillLayer = false
 
-		placingItem.task = nextTask
+			if (taskLayer.length > 1) {
+				// our goal is to fill the layer (the current list of every task in the world)
+				//
+				// to ensure we can fill the layer, we need to check if,
+				// after placing this task, will there still be accessible tasks in the layer afterward?
+				const nextAccessibleTask = taskLayer.find(
+					(t) =>
+						t !== nextTask &&
+						t.isAccessibleWith([
+							...t.player.inventory,
+							...t.player.placedItems,
+							placingItem!,
+						]),
+				)
 
-		taskLayer = without(taskLayer, nextTask)
-		if (taskLayer.length === 0 || cannotFillLayer) {
-			taskLayer = shuffle(multi.nonVictoryTasks.toArray())
+				if (!nextAccessibleTask) {
+					// if there are no tasks after placing this item,
+					// skip it and add it back to the pool to try placing it on a later iteration,
+					// while keeping track of how many items we've skipped from this condition
+					if (skipCount < itemPool.length + 1) {
+						skipCount += 1
+						itemPool.unshift(placingItem)
+						continue
+					}
+
+					// if we're here, we skipped every item and can't find one to fill the layer,
+					// so set this to know that we need to restart with a new layer
+					cannotFillLayer = true
+				}
+			}
+
+			skipCount = 0
+
+			placingItem.task = nextTask
+
+			taskLayer = without(taskLayer, nextTask)
+			if (taskLayer.length === 0 || cannotFillLayer) {
+				taskLayer = shuffle(this.nonVictoryTasks.toArray())
+			}
 		}
 	}
 }
@@ -365,7 +365,7 @@ if (import.meta.main) {
 		},
 	})
 
-	generate(multi)
+	multi.generate()
 
 	console.log()
 	for (const player of multi.players.values()) {
