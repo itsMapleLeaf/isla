@@ -3,29 +3,18 @@ import { randomInt } from "node:crypto"
 import { range, shuffle, without } from "es-toolkit"
 import { raise } from "./helpers.ts"
 
-type WorldSpec = {
+export type PlayerSpec = {
+	world: WorldSpec
+}
+
+export type WorldSpec = {
 	name: string
 	startingItems: Array<({ name: string } | { tag: string }) & { count: number }>
 	items: { [name: string]: ItemSpec }
 	tasks: { [name: string]: TaskSpec }
 }
 
-type ItemSpec = {
-	tags?: Array<string>
-	count?: number
-}
-
-type TaskSpec = {
-	tags?: Array<string>
-	needs?: { amount?: number } & ({ item: string } | { itemTag: string })
-	victory?: boolean
-}
-
-type PlayerSpec = {
-	world: WorldSpec
-}
-
-class Player {
+export class Player {
 	readonly id: string
 	readonly name: string
 	readonly spec: PlayerSpec
@@ -83,7 +72,13 @@ class Player {
 	}
 }
 
-class Task {
+export type TaskSpec = {
+	tags?: Array<string>
+	needs?: { amount?: number } & ({ item: string } | { itemTag: string })
+	victory?: boolean
+}
+
+export class Task {
 	readonly id
 
 	constructor(
@@ -119,7 +114,12 @@ class Task {
 	}
 }
 
-class Item {
+export type ItemSpec = {
+	tags?: Array<string>
+	count?: number
+}
+
+export class Item {
 	readonly id
 	task?: Task
 	collected?: boolean
@@ -133,12 +133,12 @@ class Item {
 	}
 }
 
-type MultiWorldSpec = {
+export type MultiWorldSpec = {
 	name: string
 	players: { [name: string]: PlayerSpec }
 }
 
-class MultiWorld {
+export class MultiWorld {
 	readonly name
 	readonly players = new Map<string, Player>()
 	readonly tasks = new Map<string, Task>()
